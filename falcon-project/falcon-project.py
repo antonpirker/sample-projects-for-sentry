@@ -1,8 +1,18 @@
 # Let's get this party started!
 from wsgiref.simple_server import make_server
 
-import falcon
+import os
 
+import falcon
+import sentry_sdk
+from sentry_sdk.integrations.falcon import FalconIntegration
+
+sentry_sdk.init(
+   dsn=os.environ.get('SENTRY_DSN', None),
+   integrations=[FalconIntegration()]
+)
+
+api = falcon.API()
 
 # Falcon follows the REST architectural style, meaning (among
 # other things) that you think in terms of resources and state
@@ -12,12 +22,13 @@ class ThingsResource:
         """Handles GET requests"""
         resp.status = falcon.HTTP_200  # This is the default status
         resp.content_type = falcon.MEDIA_TEXT  # Default is JSON, so override
+
+        # This is the error that Sentry is capturing.
+        bla = 1/0
+
         resp.text = ('Hello, World')
 
-ƒ
-# falcon.App instances are callable WSGI apps
-# in larger applications the app is created in a separate file
-app = falcon.App()
+app = falcon.API()
 
 # Resources are represented by long-lived class instances
 things = ThingsResource()
