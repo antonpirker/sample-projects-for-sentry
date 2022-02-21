@@ -2,6 +2,7 @@
 from wsgiref.simple_server import make_server
 
 import os
+import time
 
 import falcon
 import sentry_sdk
@@ -22,6 +23,8 @@ class ThingsResource:
         """Handles GET requests"""
         resp.status = falcon.HTTP_200  # This is the default status
         resp.content_type = falcon.MEDIA_TEXT  # Default is JSON, so override
+
+        time.sleep(2)
 
         # This is the error that Sentry is capturing.
         bla = 1/0

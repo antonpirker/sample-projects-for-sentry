@@ -3,3 +3,5 @@ falcon==2.0
 -e ../../sentry-python
 
 ipdb
+
+gunicorn
