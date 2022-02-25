@@ -175,6 +175,9 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 100,
 }
 
+# Celery
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+
 
 # Sentry
 sentry_sdk.init(

@@ -31,3 +31,6 @@ Temporary Items
 .direnv
 .envrc
 .env
+
+# Redis DB
+*.rdb
