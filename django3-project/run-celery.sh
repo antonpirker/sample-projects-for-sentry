@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# exit on first error
 set -e
 
 redis-server &
