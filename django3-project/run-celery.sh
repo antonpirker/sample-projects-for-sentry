@@ -2,7 +2,7 @@
 
 set -e
 
-#redis-server&
+redis-server &
 
 cd demosite
 
