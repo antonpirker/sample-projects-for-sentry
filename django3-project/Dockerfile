@@ -1,8 +1,5 @@
 FROM python:3
 
-ARG IS_WUNDERPREVIEW
-ENV IS_WUNDERPREVIEW = $IS_WUNDERPREVIEW
-
 WORKDIR /app
 
 COPY demosite/requirements.txt ./
