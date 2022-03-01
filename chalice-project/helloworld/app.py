@@ -17,6 +17,12 @@ def boom():
     return {"hello": boom_util(trigger)}
 
 
+@app.route("/zero")
+def zero():
+    bla = 1 / 0
+    return {"hello": "zero"}
+
+
 @app.route("/")
 def index():
     return {"hello": "world"}
