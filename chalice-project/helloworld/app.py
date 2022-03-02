@@ -1,6 +1,14 @@
+import os
+
+import sentry_sdk
 from chalice import Chalice
+from sentry_sdk.integrations.chalice import ChaliceIntegration
 
 from chalicelib.utils import boom as boom_util
+
+sentry_sdk.init(
+    dsn=os.environ.get("SENTRY_DSN", None), integrations=[ChaliceIntegration()]
+)
 
 app = Chalice(app_name="helloworld")
 

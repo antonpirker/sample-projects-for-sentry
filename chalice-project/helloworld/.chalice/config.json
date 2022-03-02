@@ -1,6 +1,9 @@
 {
   "version": "2.0",
   "app_name": "helloworld",
+  "environment_variables": {
+    "SENTRY_DSN": "https://8b3e6227789a4b54905cc19d3dcb4234@o1065773.ingest.sentry.io/6239058"
+  },
   "stages": {
     "dev": {
       "api_gateway_stage": "api"
