@@ -1,4 +1,5 @@
 import os
+import time
 
 import sentry_sdk
 from chalice import Chalice
@@ -29,6 +30,12 @@ def boom():
 def zero():
     bla = 1 / 0
     return {"hello": "zero"}
+
+
+@app.route("/long")
+def long():
+    time.sleep(10)
+    return {"hello": "this took really long!"}
 
 
 @app.route("/")
