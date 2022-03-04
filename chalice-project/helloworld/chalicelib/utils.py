@@ -8,6 +8,7 @@ class BoomException(Exception):
 def boom(x):
     if x > 0:
         rand = uuid.uuid4()
-        raise BoomException(f"With random id {rand}")
+        msg = f"With random id " + str(rand)
+        raise BoomException(msg)
 
     return "Boom not triggered. Set trigger=1 in query parameters"
