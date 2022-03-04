@@ -9,6 +9,7 @@ from chalicelib.utils import boom as boom_util
 
 sentry_sdk.init(
     dsn=os.environ.get("SENTRY_DSN", None), integrations=[ChaliceIntegration()]
+    debug=True,
 )
 
 app = Chalice(app_name="helloworld")
