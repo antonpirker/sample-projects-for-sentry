@@ -3,13 +3,31 @@ import time
 
 import sentry_sdk
 from chalice import Chalice
+
+from sentry_sdk.integrations.argv import ArgvIntegration
+from sentry_sdk.integrations.atexit import AtexitIntegration
 from sentry_sdk.integrations.chalice import ChaliceIntegration
+from sentry_sdk.integrations.excepthook import ExcepthookIntegration
+from sentry_sdk.integrations.logging import LoggingIntegration
+from sentry_sdk.integrations.modules import ModulesIntegration
+from sentry_sdk.integrations.stdlib import StdlibIntegration
+from sentry_sdk.integrations.threading import ThreadingIntegration
 
 from chalicelib.utils import boom as boom_util
 
 sentry_sdk.init(
     dsn=os.environ.get("SENTRY_DSN", None),
-    integrations=[ChaliceIntegration()],
+    default_integrations=False,
+    integrations=[
+        LoggingIntegration(),
+        StdlibIntegration(),
+        ExcepthookIntegration(),
+        AtexitIntegration(),
+        ModulesIntegration(),
+        ArgvIntegration(),
+        ThreadingIntegration(),
+        ChaliceIntegration(),
+    ],
     debug=True,
 )
 
