@@ -105,7 +105,9 @@ def invoke():
 
 @app.lambda_function()
 def do_important_calculation(event, context):
-    """A second lambda function that can trigger an error"""
+    """A second lambda function that can trigger an error
+
+    Using pandas here, because it is a huge lib that takes some time and resources to load."""
     import pandas as pd
 
     d = {"col1": [1, 2], "col2": [3, 4]}
