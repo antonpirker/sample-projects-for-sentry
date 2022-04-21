@@ -23,17 +23,27 @@ sentry_sdk.init(
 app = Chalice(app_name=APP_NAME)
 
 """
-- just does something and has no Sentry stuff in it whatsoever.
-- just inits the sdk and does NOT throw any errors
-- has no Sentry stuff and throws an error
-- inits the sdk and throws an error
-- inits the sdk and starts lots of transactions each containing lots of spans. (100? 500?)
+- BASELINE (with sentry removed from the code and not layer)
+    - measure /
+    - measure /boom?trigger=1
+    - measure /intrumentation
+- CURRENT SENTRY INTEGRATION (call init() and production layer added)
+    - measure /
+    - measure /boom?trigger=1
+    - measure /intrumentation
+- NEW EXTENSION (call init and new layer with extension added)
+    - measure /
+    - measure /boom?trigger=1
+    - measure /intrumentation
 """
 
 
 @app.route("/")
 def index():
-    """Dummy endpoint in first Lambda function"""
+    """Dummy endpoint doing not much"""
+
+    time.sleep(0.03)
+
     return {"hello": "world"}
 
 
@@ -47,12 +57,16 @@ def boom():
         else 0
     )
 
+    time.sleep(0.03)
+
     return {"hello": boom_util(trigger)}
 
 
 @app.route("/instrumentation")
 def instrumentation():
     """Endpoint with lots of custom instrumentation"""
+
+    time.sleep(0.03)
 
     return {"hello": "instrumentation"}
 
