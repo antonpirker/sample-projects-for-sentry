@@ -1,10 +1,20 @@
 {
   "resources": [
     {
+      "name": "managed-layer",
+      "resource_type": "lambda_layer",
+      "layer_version_arn": "arn:aws:lambda:eu-central-1:599817902985:layer:helloworld-dev-managed-layer:8"
+    },
+    {
       "name": "default-role",
       "resource_type": "iam_role",
       "role_arn": "arn:aws:iam::599817902985:role/helloworld-dev",
       "role_name": "helloworld-dev"
+    },
+    {
+      "name": "do_important_calculation",
+      "resource_type": "lambda_function",
+      "lambda_arn": "arn:aws:lambda:eu-central-1:599817902985:function:helloworld-dev-do_important_calculation"
     },
     {
       "name": "api_handler",

@@ -1,1 +1,4 @@
 -e ../../../sentry-python
+
+boto3==1.21.44
+pandas==1.4.2
