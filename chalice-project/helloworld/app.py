@@ -33,11 +33,13 @@ app = Chalice(app_name=APP_NAME)
 
 @app.route("/")
 def index():
+    """Dummy endpoint in first Lambda function"""
     return {"hello": "world"}
 
 
 @app.route("/boom")
 def boom():
+    """Endpoint that can trigger an error"""
     request = app.current_request
     trigger = int(
         request.query_params["trigger"]
@@ -48,11 +50,20 @@ def boom():
     return {"hello": boom_util(trigger)}
 
 
+@app.route("/instrumentation")
+def instrumentation():
+    """Endpoint with lots of custom instrumentation"""
+
+    return {"hello": "instrumentation"}
+
+
 @app.route("/invoke")
 def invoke():
+    """Function that can invoke the other Lambda function"""
     import boto3
     import json
 
+    # getting the trigger for raising an error
     request = app.current_request
     trigger = int(
         request.query_params["trigger"]
@@ -64,6 +75,7 @@ def invoke():
         "trigger": trigger,
     }
 
+    # invoke the other lambda function
     lambda_client = boto3.client("lambda")
     invoke_response = lambda_client.invoke(
         FunctionName=f"{APP_NAME}-{ENVIRONMENT}-do_important_calculation",
@@ -79,6 +91,7 @@ def invoke():
 
 @app.lambda_function()
 def do_important_calculation(event, context):
+    """A second lambda function that can trigger an error"""
     import pandas as pd
 
     d = {"col1": [1, 2], "col2": [3, 4]}
