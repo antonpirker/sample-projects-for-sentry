@@ -1,7 +1,8 @@
 import os
 import time
 
-import sentry_sdk
+# import sentry_sdk
+
 from chalice import Chalice
 
 from chalicelib.utils import boom as boom_util
@@ -13,29 +14,14 @@ ENVIRONMENT = os.environ.get("SENTRY_ENVIRONMENT", "dev")
 RELEASE = os.environ.get("SENTRY_RELEASE", f"{APP_NAME}@0.0.0")
 TRACES_SAMPLE_RATE = float(os.environ.get("SENTRY_TRACE_SAMPLE_RATE", "1.0"))
 
-sentry_sdk.init(
-    dsn=DSN,
-    environment=ENVIRONMENT,
-    release=RELEASE,
-    traces_sample_rate=TRACES_SAMPLE_RATE,
-)
+# sentry_sdk.init(
+#     dsn=DSN,
+#     environment=ENVIRONMENT,
+#     release=RELEASE,
+#     traces_sample_rate=TRACES_SAMPLE_RATE,
+# )
 
 app = Chalice(app_name=APP_NAME)
-
-"""
-- BASELINE (with sentry removed from the code and not layer)
-    - measure /
-    - measure /boom?trigger=1
-    - measure /intrumentation
-- CURRENT SENTRY INTEGRATION (call init() and production layer added)
-    - measure /
-    - measure /boom?trigger=1
-    - measure /intrumentation
-- NEW EXTENSION (call init and new layer with extension added)
-    - measure /
-    - measure /boom?trigger=1
-    - measure /intrumentation
-"""
 
 
 @app.route("/")
@@ -71,9 +57,11 @@ def instrumentation():
     return {"hello": "instrumentation"}
 
 
+"""
+DEACTIVATED for now because it should go in a layer and i am testing now without layer
 @app.route("/invoke")
 def invoke():
-    """Function that can invoke the other Lambda function"""
+    '''Function that can invoke the other Lambda function'''
     import boto3
     import json
 
@@ -105,9 +93,9 @@ def invoke():
 
 @app.lambda_function()
 def do_important_calculation(event, context):
-    """A second lambda function that can trigger an error
+    '''A second lambda function that can trigger an error
 
-    Using pandas here, because it is a huge lib that takes some time and resources to load."""
+    Using pandas here, because it is a huge lib that takes some time and resources to load'''
     import pandas as pd
 
     d = {"col1": [1, 2], "col2": [3, 4]}
@@ -119,3 +107,4 @@ def do_important_calculation(event, context):
     bla = 10 / event["trigger"]
 
     return {"value": val}
+"""
