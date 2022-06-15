@@ -1,0 +1,8 @@
+starlette==0.20.3
+uvicorn==0.17.3
+
+python-multipart
+
+ipdb
+
+-e ../../sentry-python
