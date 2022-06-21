@@ -1,7 +1,8 @@
 
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
+from rest_framework.response import Response
 
 from show.models import Show
 from show.serializers import ShowSerializer

@@ -6,6 +6,7 @@ class ShowSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Show
         fields = [
+            'pk',
             'show_type',
             'title',
             'director',
