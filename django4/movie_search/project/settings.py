@@ -27,10 +27,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+ADMINS = [
+    ('admin', 'admin@example.com'),
+]
 
 # Application definition
 
 INSTALLED_APPS = [
+    'show.apps.ShowConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
