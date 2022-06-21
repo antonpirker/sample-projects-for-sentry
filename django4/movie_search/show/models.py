@@ -6,7 +6,7 @@ class Show(models.Model):
     director = models.CharField(max_length=200)
     cast = models.CharField(max_length=200)
     countries = models.CharField(max_length=200)
-    date_added = models.DateTimeField()
+    date_added = models.CharField(max_length=200)
     release_year = models.SmallIntegerField()
     rating = models.CharField(max_length=200)
     duration = models.CharField(max_length=200)
