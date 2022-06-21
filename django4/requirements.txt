@@ -1,2 +1,4 @@
 Django==4.0.5
 sentry_sdk==1.5.12
+
+djangorestframework==3.13.1
