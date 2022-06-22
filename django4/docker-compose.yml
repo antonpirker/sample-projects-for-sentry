@@ -1,0 +1,10 @@
+
+version: "3.7"
+services:
+    gunicorn:
+        image: django4:v0
+        restart: unless-stopped
+        build:
+            context: .
+        ports:
+            - "8000:8000"
