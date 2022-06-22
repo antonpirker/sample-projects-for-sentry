@@ -1,3 +1,5 @@
+movie_search/app-static/
+
 # Django #
 *.log
 *.pot
