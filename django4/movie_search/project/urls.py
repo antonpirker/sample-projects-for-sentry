@@ -21,7 +21,7 @@ from show import views as show_views
 from project import views
 
 router = routers.DefaultRouter()
-router.register(r'shows', show_views.ShowViewSet)
+router.register(r'shows', show_views.ShowViewSet, basename='shows')
 
 urlpatterns = [
     path('', views.root),

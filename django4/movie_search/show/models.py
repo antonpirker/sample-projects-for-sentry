@@ -12,3 +12,6 @@ class Show(models.Model):
     duration = models.CharField(max_length=200)
     categories = models.CharField(max_length=200)
     description = models.CharField(max_length=200)
+
+    class Meta:
+        ordering = ('title', )
