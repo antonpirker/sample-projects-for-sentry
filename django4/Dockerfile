@@ -3,10 +3,10 @@ FROM python:3
 
 #
 # Build:
-# docker build -t django4:v0 .
+# docker build -t django_backend:v0 .
 #
 # Run:
-# docker run --rm -p 8000:8000 -it django4:v0 
+# docker run --rm -p 8000:8000 -it -e SENTRY_DSN_BACKEND=https://1@o1.ingest.sentry.io/1 -e SENTRY_TRACES_SAMPLE_RATE_BACKEND=0.1 django_backend:v0
 #
 
 ARG SENTRY_DSN_BACKEND
