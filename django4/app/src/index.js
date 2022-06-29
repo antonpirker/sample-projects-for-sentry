@@ -1,15 +1,32 @@
-import React from "react";
+import * as Sentry from "@sentry/react";
+import { BrowserTracing } from "@sentry/tracing";
 import ReactDOM from "react-dom/client";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./index.css";
-import Shows from "./Shows";
-import Show from "./Show";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { QueryClientProvider, QueryClient } from "react-query";
+import Show from "./Show";
+import Shows from "./Shows";
+import { createBrowserHistory } from 'history';
+
+const history = createBrowserHistory();
+
+Sentry.init({
+  dsn: "https://4fa9b13665d74aa98c924d855fdddca0@o447951.ingest.sentry.io/6539773",
+  integrations: [new BrowserTracing({
+    tracingOrigins: ["localhost", "localhost:8000", "localhost:3000", /^\//],
+    routingInstrumentation: Sentry.reactRouterV6Instrumentation(history),
+  })],
+
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+});
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-
 const queryClient = new QueryClient();
+
 root.render(
   <QueryClientProvider client={queryClient}>
     <div className="container mx-auto p-4">
