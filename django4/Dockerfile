@@ -5,7 +5,7 @@ FROM python:3
 # Build:
 # docker build -t django_backend:v0 .
 #
-# Run:
+# Run with setting Sentry configuration:
 # docker run --rm -p 8000:8000 -it -e SENTRY_DSN_BACKEND=https://1@o1.ingest.sentry.io/1 -e SENTRY_TRACES_SAMPLE_RATE_BACKEND=0.1 django_backend:v0
 #
 
@@ -14,6 +14,9 @@ ENV SENTRY_DSN_BACKEND=$SENTRY_DSN_BACKEND
 
 ARG SENTRY_TRACES_SAMPLE_RATE_BACKEND=1.0
 ENV SENTRY_TRACES_SAMPLE_RATE_BACKEND=$SENTRY_TRACES_SAMPLE_RATE_BACKEND
+
+ARG DJANGO_DEBUG=False
+ENV DJANGO_DEBUG=$DJANGO_DEBUG
 
 WORKDIR /app
 

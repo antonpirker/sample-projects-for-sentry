@@ -26,7 +26,8 @@ DATA_DIR = Path(__file__).resolve().parent.parent.parent / 'data'
 SECRET_KEY = 'django-insecure-ny_%o6*o(npqht@9oc%2hsxz6upvlwir)cuys5-)-at!7gfibw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True if os.getenv("DJANGO_DEBUG", "True") == "True" else False
+logging.warn(f'~~~~ DEBUG: {DEBUG}')
 
 ALLOWED_HOSTS = ['*']
 
@@ -147,6 +148,7 @@ REST_FRAMEWORK = {
 
 # Sentry
 import sentry_sdk
+
 
 logging.warn(f'~~~~ SENTRY_DSN_BACKEND: {os.getenv("SENTRY_DSN_BACKEND", None)}')
 logging.warn(f'~~~~ SENTRY_TRACES_SAMPLE_RATE_BACKEND: {os.getenv("SENTRY_TRACES_SAMPLE_RATE_BACKEND", "1.0")}')
