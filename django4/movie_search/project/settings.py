@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+import os
+import logging
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -145,12 +147,16 @@ REST_FRAMEWORK = {
 
 # Sentry
 import sentry_sdk
+
+logging.warn(f'~~~~ SENTRY_DSN_BACKEND: {os.getenv("SENTRY_DSN_BACKEND", None)}')
+logging.warn(f'~~~~ SENTRY_TRACES_SAMPLE_RATE_BACKEND: {os.getenv("SENTRY_TRACES_SAMPLE_RATE_BACKEND", "1.0")}')
+
 sentry_sdk.init(
-    dsn="https://abf0b98b129b4ccd90c45e4cef6c9aff@o447951.ingest.sentry.io/6507080",
-    debug=True,
-    send_default_pii=True,
+    dsn=os.getenv("SENTRY_DSN_BACKEND", None),
+    debug=os.getenv("SENTRY_DEBUG_BACKEND", True),
+    send_default_pii=os.getenv("SENTRY_SENTRY_DEFAULT_PII_BACKEND", True),
     # Set traces_sample_rate to 1.0 to capture 100%
     # of transactions for performance monitoring.
     # We recommend adjusting this value in production.
-    traces_sample_rate=1.0,
+    traces_sample_rate=float(os.getenv("SENTRY_TRACES_SAMPLE_RATE_BACKEND", "1.0")),
 )

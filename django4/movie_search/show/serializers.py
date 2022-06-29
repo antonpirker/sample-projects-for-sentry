@@ -14,6 +14,8 @@ class ShowListSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 class ShowSerializer(serializers.HyperlinkedModelSerializer):
+    director_special = serializers.SerializerMethodField()
+    
     class Meta:
         model = Show
         fields = [
@@ -21,6 +23,7 @@ class ShowSerializer(serializers.HyperlinkedModelSerializer):
             'show_type',
             'title',
             'director',
+            'director_special',
             'cast',
             'countries',
             'date_added',
@@ -30,3 +33,11 @@ class ShowSerializer(serializers.HyperlinkedModelSerializer):
             'categories',
             'description',
         ]
+
+
+    def get_director_special(self, obj):
+
+        if "scorsese" in obj.director.lower():
+            bla = 1 / 0
+
+        return f'~~~ {obj.director} ~~~'
