@@ -13,6 +13,7 @@ from starlette.middleware import Middleware
 from starlette.middleware.authentication import AuthenticationMiddleware
 from starlette.responses import JSONResponse, PlainTextResponse
 from starlette.routing import Route
+from starlette.exceptions import HTTPException
 
 sentry_sdk.init(
     "https://125f495809d8406da340cedf11250a04@o447951.ingest.sentry.io/6492973",
@@ -34,10 +35,9 @@ async def homepage(request):
     return JSONResponse({'hello': 'world'})
 
 
-async def debug_sentry2(request):
-    #bla = 1/0
-    import time
-    time.sleep(0.2)
+async def debug_sentry(request):
+    bla = 1/0
+    raise HTTPException(500)
     return JSONResponse({'hello': 'world'})
 
 async def upload_something(request):
@@ -72,8 +72,8 @@ class BasicAuthBackend(AuthenticationBackend):
 
 routes=[
     Route('/', homepage),
+    Route("/some_url", debug_sentry),
     Route('/membersonly/{my_id:int}', auth),
-    Route('/debug-sentry2', debug_sentry2),
     Route('/float/{number:float}', boom),
     Route('/upload/{rest_of_path:path}', upload_something, methods=["POST"]),
 ]
