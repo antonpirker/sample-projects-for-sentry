@@ -1,6 +1,8 @@
 fastapi
 uvicorn[standard]
 
+python-multipart  # needed by starlette for form processing
+
 -e ../../sentry-python
 
 ipdb

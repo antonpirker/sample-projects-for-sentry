@@ -1,18 +1,18 @@
 import os
 from calendar import c
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Form
 
 import sentry_sdk
 from sentry_sdk.integrations.fastapi import FastApiIntegration
+from sentry_sdk.integrations.starlette import StarletteIntegration
 
 sentry_sdk.init(
     dsn=os.getenv("SENTRY_DSN", None),
     environment=os.getenv("ENV", "local"),
     integrations=[
-        FastApiIntegration(
-            transaction_style="url",
-        ),
+        StarletteIntegration(),
+        FastApiIntegration(),
     ],
     debug=True,
     send_default_pii=True,
@@ -22,10 +22,7 @@ sentry_sdk.init(
     traces_sample_rate=1.0,
 )
 
-# import ipdb
-# ipdb.set_trace()
-
-app = FastAPI()
+app = FastAPI(debug=True)
 
 
 @app.get("/")
@@ -37,3 +34,8 @@ async def read_root():
 async def read_root():
     bla = 1 / 0
     return {"Hello": "Boom (should not be visisble)"}
+
+# broken
+@app.post("/my-post")
+async def my_post(name: str = Form()):
+    return {"message": f"Your name is {name}"}
