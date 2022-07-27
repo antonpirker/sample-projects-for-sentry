@@ -1,0 +1,5 @@
+quart
+
+-e ../../sentry-python
+
+ipdb
