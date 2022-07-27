@@ -35,7 +35,7 @@ def index():
 
 @app.route("/boom")
 def boom():
-    """Endpoint that can trigger an error"""
+    """Endpoint that can trigger an error when given the ?trigger=1 query param"""
     request = app.current_request
     trigger = int(
         request.query_params["trigger"]
@@ -48,13 +48,19 @@ def boom():
     return {"hello": boom_util(trigger)}
 
 
-@app.route("/instrumentation")
-def instrumentation():
-    """Endpoint with lots of custom instrumentation"""
-
+@app.route("/error")
+def error():
+    """Throws error"""
     time.sleep(0.03)
+    return {"hello": boom_util(1)}
 
-    return {"hello": "instrumentation"}
+
+@app.route("/no-error")
+def no_error():
+    """No error"""
+    time.sleep(0.03)
+    
+    return {"hello": boom_util(1)}    
 
 
 """
