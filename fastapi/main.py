@@ -24,6 +24,22 @@ sentry_sdk.init(
 
 app = FastAPI(debug=True)
 
+from fastapi import FastAPI, Request
+
+
+@app.middleware("http")
+async def add_process_time_header(request: Request, call_next):
+    import ipdb
+
+    ipdb.set_trace()
+    response = await call_next(request)
+    import ipdb
+
+    ipdb.set_trace()
+    body = await request.body()
+
+    return response
+
 
 @app.get("/")
 async def read_root():
@@ -34,6 +50,7 @@ async def read_root():
 async def read_root():
     bla = 1 / 0
     return {"Hello": "Boom (should not be visisble)"}
+
 
 # broken
 @app.post("/my-post")
