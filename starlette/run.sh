@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
 # exit on first error
-set -e
+set -xe
 
-# activate virtual environment
+# create and activate virtual environment
+python -m venv .venv
 source .venv/bin/activate
 
 # Install (or update) requirements
