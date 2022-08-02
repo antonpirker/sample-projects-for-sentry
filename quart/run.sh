@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # exit on first error
-set -e
+set -xe
 
 # create and activate virtual environment
 python -m venv .venv
