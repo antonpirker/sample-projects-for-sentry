@@ -1,11 +1,10 @@
 import os
-from calendar import c
-
-from fastapi import FastAPI, Form
 
 import sentry_sdk
 from sentry_sdk.integrations.fastapi import FastApiIntegration
 from sentry_sdk.integrations.starlette import StarletteIntegration
+
+from fastapi import FastAPI, Form
 
 sentry_sdk.init(
     dsn=os.getenv("SENTRY_DSN", None),
@@ -29,15 +28,7 @@ from fastapi import FastAPI, Request
 
 @app.middleware("http")
 async def add_process_time_header(request: Request, call_next):
-    import ipdb
-
-    ipdb.set_trace()
     response = await call_next(request)
-    import ipdb
-
-    ipdb.set_trace()
-    body = await request.body()
-
     return response
 
 
@@ -55,4 +46,5 @@ async def read_root():
 # broken
 @app.post("/my-post")
 async def my_post(name: str = Form()):
+    bla = 1 / 0
     return {"message": f"Your name is {name}"}
