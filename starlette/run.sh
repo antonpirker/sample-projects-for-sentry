@@ -10,4 +10,4 @@ source .venv/bin/activate
 # Install (or update) requirements
 pip install -r requirements.txt
 
-uvicorn hello:app
+uvicorn main:app

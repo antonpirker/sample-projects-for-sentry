@@ -33,36 +33,48 @@ sentry_sdk.init(
 )
 
 
-async def homepage(request):
-    return JSONResponse({"hello": "world"})
+async def home(request):
+    """
+    curl --cookie "REQ_TYPE=home" http://localhost:8000/
+    """    
+    return JSONResponse({"hello": "home world"})
 
 
 async def debug_sentry(request):
+    """
+    curl --cookie "REQ_TYPE=debug-sentry" http://localhost:8000/debug-sentry
+    """
     bla = 1 / 0
+    return JSONResponse({"debug_sentry": "true"})
 
 
 async def upload_something(request):
+    """
+    """
     bla = 1 / 0
     return JSONResponse({"upload": "hello"})
 
 
-async def auth(request):
-    bla = 1 / 0
-    if request.user.is_authenticated:
-        return PlainTextResponse("Hello, " + request.user.display_name)
-    return PlainTextResponse("Hello, you are not invited!")
-
-
-async def my_post(request):
+async def post_something(request):
+    """
+    curl -X POST http://localhost:8000/post --cookie "REQ_TYPE=form" -H "Content-Type: application/x-www-form-urlencoded" -d "username=grace_hopper_form&password=welcome123"
+    curl -X POST http://localhost:8000/post --cookie "REQ_TYPE=json" -H "Content-Type: application/json" -d '{"username":"grace_hopper_json","password":"welcome123"}'
+    curl -X POST http://localhost:8000/post --cookie "REQ_TYPE=post" -F username=grace_hopper_post -F password=hello123
+    """
     form = await request.form()
     bla = 1 / 0
     return JSONResponse({"message": f"Your name is {form['name']}"})
 
 
-def my_post2(request):
-    form = request.form()
-    bla = 1 / 0
-    return JSONResponse({"message": f"Your name is {form['name']}"})
+async def membersonly(request):
+    """
+    curl --cookie "REQ_TYPE=anonymous" http://localhost:8000/members-only/123
+    curl --cookie "REQ_TYPE=logged-in" -u 'grace_hopper_basic:welcome123' http://localhost:8000/members-only/123
+    """
+    if request.user.is_authenticated:
+        bla = 1 / 0
+        return PlainTextResponse("Hello, " + request.user.display_name)
+    return PlainTextResponse("Hello, you are not invited!")
 
 
 class BasicAuthBackend(AuthenticationBackend):
@@ -87,12 +99,11 @@ class BasicAuthBackend(AuthenticationBackend):
 
 
 routes = [
-    Route("/", homepage),
-    Route("/some_url", debug_sentry),
-    Route("/membersonly/{my_id:int}", auth),
-    Route("/float/{number:float}", boom),
+    Route("/", home),
+    Route("/debug-sentry", debug_sentry),
     Route("/upload/{rest_of_path:path}", upload_something, methods=["POST"]),
-    Route("/my-post", my_post, methods=["POST"]),
+    Route("/post", post_something, methods=["POST"]),
+    Route("/members-only/{my_id:int}", membersonly),
 ]
 
 middleware = [
