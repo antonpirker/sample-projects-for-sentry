@@ -36,7 +36,7 @@ sentry_sdk.init(
 async def home(request):
     """
     curl --cookie "REQ_TYPE=home" http://localhost:8000/
-    """    
+    """
     return JSONResponse({"hello": "home world"})
 
 
@@ -49,8 +49,7 @@ async def debug_sentry(request):
 
 
 async def upload_something(request):
-    """
-    """
+    """ """
     bla = 1 / 0
     return JSONResponse({"upload": "hello"})
 
@@ -103,7 +102,7 @@ routes = [
     Route("/debug-sentry", debug_sentry),
     Route("/upload/{rest_of_path:path}", upload_something, methods=["POST"]),
     Route("/post", post_something, methods=["POST"]),
-    Route("/members-only/{my_id:int}", membersonly),
+    Route("/members-only/{member_id:int}", membersonly),
 ]
 
 middleware = [
