@@ -1,31 +1,27 @@
+import io
 import os
 import secrets
 
 import sentry_sdk
-from sentry_sdk.integrations.fastapi import FastApiIntegration
-from sentry_sdk.integrations.starlette import StarletteIntegration
+from PIL import Image
+from sqlalchemy.orm import Session
 
-from fastapi import FastAPI, Form, Depends
+import crud
+import schemas
+from database import SessionLocal
+from fastapi import (Depends, FastAPI, File, Form, HTTPException, 
+                     UploadFile)
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
-
 
 sentry_sdk.init(
     dsn=os.getenv("SENTRY_DSN", None),
     environment=os.getenv("ENV", "local"),
-    integrations=[
-        FastApiIntegration(),
-    ],
-    debug=True,
-    send_default_pii=True,
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
-    # We recommend adjusting this value in production.
     traces_sample_rate=1.0,
+    send_default_pii=True,
+    debug=True,
 )
 
 app = FastAPI(debug=True)
-
-security = HTTPBasic()
 
 
 @app.get("/")
@@ -41,6 +37,7 @@ async def debug_sentry():
     """
     curl --cookie "REQ_TYPE=debug-sentry" http://localhost:8000/debug-sentry
     """
+    bla = 1 / 0
     return {"debug_sentry": "true"}
 
 
@@ -54,6 +51,8 @@ async def post(username: str = Form(), password: str = Form()):
     bla = 1 / 0
     return {"message": f"Your name is {username}"}
 
+
+security = HTTPBasic()
 
 def _get_current_username(credentials: HTTPBasicCredentials = Depends(security)):
     correct_username = secrets.compare_digest(
@@ -75,3 +74,46 @@ async def members_only(member_id: int, username: str = Depends(_get_current_user
         bla = 1 / 0
         return {"message": f"Hello, {username} (id: {member_id})"}
     return {"message": "Hello, you are not invited!"}
+
+
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+@app.get("/api/shows/", response_model=list[schemas.Show])
+def read_shows(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    shows = crud.get_shows(db, skip=skip, limit=limit)
+    return shows
+
+
+@app.get("/api/shows/{show_id}", response_model=schemas.Show)
+def read_show(show_id: int, db: Session = Depends(get_db)):
+    show = crud.get_show(db, show_id=show_id)
+    if show is None:
+        raise HTTPException(status_code=404, detail="Show not found")
+    return show
+
+
+@app.post("/predict")
+async def predict(file: UploadFile = File(default=None)):
+    contents = await file.read()
+    Image.open(io.BytesIO(contents)).convert("RGB")
+    return {"result": "ok"}
+
+
+# @app.middleware("http")
+# async def logging_middleware(request: Request, call_next):
+#     start_time = time.time()
+#     print(f'~~~~~~~ reading request body in logging_middleware')
+
+#     import ipdb
+#     ipdb.set_trace()
+#     body = await request.body()
+#     print(body)
+#     response = await call_next(request)
+#     return response

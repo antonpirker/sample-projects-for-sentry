@@ -2,7 +2,12 @@ fastapi
 uvicorn[standard]
 
 python-multipart  # needed by starlette for form processing
+sqlalchemy  # orm for postgres
+psycopg2  # postgres connection
+
+pillow
 
 -e ../../sentry-python
+#sentry-sdk==1.9.9
 
 ipdb
