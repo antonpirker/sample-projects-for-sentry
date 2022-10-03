@@ -10,4 +10,4 @@ source .venv/bin/activate
 # Install (or update) requirements
 pip install -r requirements.txt
 
-./manage.py runserver
+cd movie_search && gunicorn project.asgi:application -k uvicorn.workers.UvicornWorker      
